@@ -1,5 +1,4 @@
 import json
-import os
 from abc import ABC, abstractmethod
 
 
@@ -18,9 +17,12 @@ class FileWork(ABC):
 
 
 class WorkWithJson(FileWork):
+    """
+    Класс работающий с JSON файлом вакансий
+    """
     def __init__(self):
         self.file_name = ""
-        self.abs_path = os.path.abspath("data/vacancies.json")
+        self.abs_path = "data/vacancies.json"
 
     def read_file(self):
         with open(self.abs_path, "r", encoding="utf-8") as file:
@@ -28,8 +30,6 @@ class WorkWithJson(FileWork):
 
     def save_file(self, data):
         with open(self.abs_path, "w", encoding="utf-8") as file:
-            # res = json.load(file)
-            # res.append(data)
             json.dump(data, file, ensure_ascii=False, indent=4)
 
     def delite_file(self):

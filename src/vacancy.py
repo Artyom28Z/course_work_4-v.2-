@@ -1,16 +1,20 @@
 class Vacancy:
-    def __init__(self, name, area, salary, url, snippet):
+    """
+    Класс обработки информации о вакансии
+    """
+    def __init__(self, name, area, salary):
         self.name = self.__validation_name(name)
         self.area = self.__validation_area(area)
-        self.salary = self.__validation_salary(salary)
-
-        self.url = url
-        self.snippet = snippet
+        self.salary = salary
 
     def __str__(self):
+        if self.salary == 0:
+            return (f"{self.name}\n"
+                    f"Город: {self.area}\n"
+                    f"З-п: Не указана\n")
         return (f"{self.name}\n"
                 f"Город: {self.area}\n"
-                f"Зарплата: {self.salary}\n")
+                f"З-п: {self.salary}\n")
 
     def __lt__(self, other):
         if self.salary < other.salary:
@@ -28,19 +32,6 @@ class Vacancy:
             return "Отсутствует название вакансии"
 
     @staticmethod
-    def __validation_salary(data):
-        if data:
-            salary_from = data.get("from")
-            salary_to = data.get("to")
-            if salary_from == None and salary_to != None:
-                return f"до {salary_to}"
-            elif salary_from != None and salary_to == None:
-                return f"от {salary_from}"
-            return f"от {salary_from} до {salary_to}"
-        else:
-            return "Не указана"
-
-    @staticmethod
     def __validation_area(data):
         if data:
             return data
@@ -51,8 +42,13 @@ class Vacancy:
     def new_vacancy(cls, vacancy):
         name = vacancy.get("name")
         area = vacancy.get("area").get("name")
-        salary = vacancy.get("salary")
-
-        url = vacancy.get("url")
-        snippet = vacancy.get("snippet")
-        return cls(name, area, salary, url, snippet)
+        if vacancy.get("salary"):
+            if vacancy.get("salary").get("from"):
+                salary = vacancy.get("salary").get("from")
+            elif vacancy.get("salary").get("from") == None and vacancy.get("salary").get("to"):
+                salary = vacancy.get("salary").get("to")
+            else:
+                salary = 0
+        else:
+            salary = 0
+        return cls(name, area, salary)
