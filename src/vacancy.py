@@ -8,6 +8,10 @@ class Vacancy:
         self.salary = salary
 
     def __str__(self):
+        """
+        Магический метод для вывода строки с краткой информацией о одной вакансии
+        :return:
+        """
         if self.salary == 0:
             return (f"{self.name}\n"
                     f"Город: {self.area}\n"
@@ -17,6 +21,11 @@ class Vacancy:
                 f"З-п: {self.salary}\n")
 
     def __lt__(self, other):
+        """
+        Магический метод сравнения по зарплате
+        :param other:
+        :return:
+        """
         if self.salary < other.salary:
             return True
         elif not self.salary or not other.salary:
@@ -26,6 +35,11 @@ class Vacancy:
 
     @staticmethod
     def __validation_name(data):
+        """
+        Статический метод проверки на присутствие или отсутствие названия вакансии
+        :param data:
+        :return:
+        """
         if data:
             return data
         else:
@@ -33,6 +47,11 @@ class Vacancy:
 
     @staticmethod
     def __validation_area(data):
+        """
+        Статический метод проверки на указание города
+        :param data:
+        :return:
+        """
         if data:
             return data
         else:
@@ -40,6 +59,11 @@ class Vacancy:
 
     @classmethod
     def new_vacancy(cls, vacancy):
+        """
+        Класс-метод сохранения свойств вакансии
+        :param vacancy:
+        :return:
+        """
         name = vacancy.get("name")
         area = vacancy.get("area").get("name")
         if vacancy.get("salary"):
